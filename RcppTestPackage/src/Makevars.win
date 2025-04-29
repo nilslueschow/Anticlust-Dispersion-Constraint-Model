@@ -1,0 +1,14 @@
+.PHONY: all
+
+GECODE_DIR = $(CURDIR)/gecode-release-6.3.0
+PKG_CPPFLAGS = -I$(GECODE_DIR)/gecode
+PKG_LIBS = -L$(GECODE_DIR) -lgecodesearch -lgecodeminimodel -lgecodeint -lgecodekernel -lgecodesupport
+CXX_STD = CXX20
+CXXFLAGS += -g -O -mtune=native
+
+.NOTPARALLEL all: build_gecode
+    $(MAKE) R_package_build
+
+build_gecode:
+    cd $(GECODE_DIR) && ./configure CC=gcc CXX=g++ --disable-examples --with-host-os=windows
+    cd $(GECODE_DIR) && $(MAKE)
